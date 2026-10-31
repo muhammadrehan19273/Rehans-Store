@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — Rehan's Store</title>
+<script>try{var t=localStorage.getItem("rs_theme"),a=localStorage.getItem("rs_accent");document.documentElement.dataset.theme=t||"light";if(a)document.documentElement.dataset.accent=a;}catch(e){}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f3ee;--bg2:#ffffff;--ink:#111113;--muted:#6b6b72;--line:#e4dfd6;--soft:#efeae2;--shadow:rgba(0,0,0,.25);
+  --acc:#ff4d1c;--acc2:#ff9a5c;--ok:#12a150;--warn:#e8a200;--blue:#2b6bff;--bad:#d6263b;--ease:cubic-bezier(.22,1,.36,1)}
+[data-theme="dark"]{--bg:#0c0c11;--bg2:#14141b;--ink:#f4f4f8;--muted:#9b9bab;--line:#25252f;--soft:#1b1b24;--shadow:rgba(0,0,0,.7)}
+[data-accent="violet"]{--acc:#7c5cff;--acc2:#c08bff}
+[data-accent="emerald"]{--acc:#0f9d73;--acc2:#4fd6a8}
+[data-accent="rose"]{--acc:#e0245e;--acc2:#ff7a9c}
+[data-accent="blue"]{--acc:#2b6bff;--acc2:#5cc8ff}
+[data-accent="gold"]{--acc:#d98e00;--acc2:#ffd24d}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;transition:background-color .3s,color .3s}
+button{font-family:inherit;cursor:pointer;border:0;color:inherit}
+h1,h2{font-family:'Sora',sans-serif;letter-spacing:-.02em}
+a{color:inherit;text-decoration:none}
+.hide{display:none!important}
+@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-new(root){z-index:2}
+
+/* Login */
+#login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.lbox{width:min(420px,100%);background:var(--bg2);border:1px solid var(--line);border-radius:28px;padding:36px;animation:up .7s var(--ease) both}
+.lbox h1{font-size:1.9rem;margin-bottom:6px}
+.lbox p{color:var(--muted);font-size:.9rem;margin-bottom:24px}
+.err{color:var(--bad);font-size:.85rem;margin:-4px 0 12px;min-height:18px}
+
+/* Fields */
+.fld{margin-bottom:14px}
+.fld label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:6px;letter-spacing:.06em}
+.fld input,.fld textarea,.fld select{width:100%;background:var(--soft);color:var(--ink);border:1.5px solid transparent;border-radius:12px;padding:13px 14px;font:inherit;font-size:.94rem;outline:0;transition:border-color .25s,background .25s}
+.fld input:focus,.fld textarea:focus,.fld select:focus{border-color:var(--acc);background:var(--bg2)}
+.fld textarea{resize:vertical;min-height:80px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chk{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--soft);border-radius:12px;margin-bottom:14px;font-size:.92rem;font-weight:500;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--acc)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:50px;background:var(--ink);color:var(--bg);font-weight:600;font-size:.9rem;transition:transform .3s var(--ease),background .25s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.5;pointer-events:none}
+.btn.acc{background:linear-gradient(90deg,var(--acc),var(--acc2));color:#fff}
+.btn.full{width:100%}
+.btn.out{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.out:hover{border-color:var(--ink)}
+.btn.sm{padding:8px 16px;font-size:.8rem}
+.btn.red{background:transparent;color:var(--bad);border:1.5px solid color-mix(in srgb,var(--bad) 35%,transparent)}
+.btn.red:hover{background:var(--bad);color:#fff}
+.btn.wa{background:#25d366;color:#fff}
+.ic-btn{width:40px;height:40px;border-radius:50%;background:var(--bg2);border:1px solid var(--line);display:grid;place-items:center;position:relative;overflow:hidden}
+.ic-btn svg{width:18px;height:18px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .6s var(--ease),opacity .3s}
+#themeBtn .moon{position:absolute;transform:translateY(30px) rotate(-90deg);opacity:0}
+[data-theme="dark"] #themeBtn .sun{transform:translateY(-30px) rotate(90deg);opacity:0}
+[data-theme="dark"] #themeBtn .moon{transform:none;opacity:1}
+
+/* Layout */
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 4vw;background:var(--bg2);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:1.2rem;white-space:nowrap}
+.logo i{color:var(--acc);font-style:normal}
+.logo small{font-family:'Inter';font-size:.65rem;background:var(--ink);color:var(--bg);padding:3px 9px;border-radius:50px;margin-left:8px;vertical-align:middle}
+.hr{display:flex;gap:8px;align-items:center}
+.tabs{display:flex;gap:8px;padding:20px 4vw 0;flex-wrap:wrap}
+.tab{padding:11px 22px;border-radius:50px;background:transparent;border:1.5px solid var(--line);font-weight:600;font-size:.88rem;transition:.25s}
+.tab.on{background:linear-gradient(90deg,var(--acc),var(--acc2));color:#fff;border-color:transparent}
+.tab b{background:var(--ink);color:var(--bg);border-radius:50px;padding:2px 8px;font-size:.7rem;margin-left:6px}
+main{padding:22px 4vw 80px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--bg2);border:1px solid var(--line);border-radius:18px;padding:16px}
+.stat span{color:var(--muted);font-size:.76rem}
+.stat b{display:block;font-size:1.5rem;margin-top:4px;font-family:'Sora',sans-serif}
+
+/* Products */
+.pgrid{display:grid;grid-template-columns:minmax(300px,400px) 1fr;gap:22px;align-items:start}
+@media(max-width:900px){.pgrid{grid-template-columns:1fr}}
+.panel{background:var(--bg2);border:1px solid var(--line);border-radius:24px;padding:22px}
+.panel h2{font-size:1.3rem;margin-bottom:16px}
+.drop{border:2px dashed var(--line);border-radius:18px;min-height:180px;display:grid;place-items:center;text-align:center;color:var(--muted);cursor:pointer;overflow:hidden;transition:border-color .25s,background .25s;margin-bottom:14px}
+.drop:hover,.drop.over{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,transparent)}
+.drop img{width:100%;height:220px;object-fit:cover;display:block}
+.drop .ph{padding:22px}
+.drop .ph b{display:block;font-size:2rem}
+.drop small{display:block;margin-top:6px;font-size:.78rem}
+.tb{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.tb input{flex:1;min-width:160px;background:var(--bg2);border:1.5px solid var(--line);color:var(--ink);border-radius:50px;padding:11px 18px;font:inherit;font-size:.9rem;outline:0}
+.tb input:focus{border-color:var(--acc)}
+.plist{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.pc{background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:10px;animation:up .5s var(--ease) both}
+.pc .im{height:150px;border-radius:14px;background:var(--soft);overflow:hidden;display:grid;place-items:center;color:var(--muted);font-size:.8rem;position:relative}
+.pc .im img{width:100%;height:100%;object-fit:cover}
+.pc .im .tg{position:absolute;top:8px;left:8px;background:var(--bad);color:#fff;font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:50px}
+.pc h3{font-size:.93rem;margin:10px 4px 2px;font-weight:600}
+.pc small{color:var(--muted);margin:0 4px;display:block;font-size:.75rem}
+.pc .pr{margin:6px 4px 10px;font-weight:700}
+.pc .pr s{color:var(--muted);font-weight:400;font-size:.78rem;margin-left:5px}
+.pc .acts{display:flex;gap:8px;padding:0 4px 4px}
+.pc .acts .btn{flex:1;padding:8px}
+.empty{text-align:center;color:var(--muted);padding:50px 10px;grid-column:1/-1}
+
+/* Orders */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{padding:8px 16px;border-radius:50px;border:1.5px solid var(--line);background:transparent;font-size:.82rem;font-weight:600;transition:.25s}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.olist{display:grid;gap:14px}
+.oc{background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:20px;animation:up .5s var(--ease) both}
+.oh{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.oh b{font-size:1.02rem}
+.oh small{color:var(--muted);display:block;font-size:.78rem}
+.tag{padding:5px 13px;border-radius:50px;font-size:.74rem;font-weight:700;color:#fff;text-transform:capitalize}
+.t-pending{background:var(--warn)}.t-confirmed{background:var(--blue)}.t-shipped{background:#7b3fe4}.t-delivered{background:var(--ok)}.t-cancelled{background:#8b8b93}
+.ob{display:grid;grid-template-columns:1fr 1fr;gap:18px;font-size:.88rem;line-height:1.6}
+@media(max-width:700px){.ob{grid-template-columns:1fr}}
+.ob h4{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.it{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding:4px 0}
+.of{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.of select{padding:9px 14px;border-radius:50px;border:1.5px solid var(--line);font:inherit;font-size:.85rem;background:var(--bg2);color:var(--ink)}
+.of .tot{margin-left:auto;font-weight:700;font-size:1.1rem}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,120px);background:var(--ink);color:var(--bg);padding:13px 24px;border-radius:50px;z-index:400;transition:transform .5s var(--ease);font-size:.9rem;font-weight:500;max-width:92vw;text-align:center}
+.toast.on{transform:translate(-50%,0)}
+.toast.bad{background:var(--bad);color:#fff}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login">
+  <form class="lbox" id="lform">
+    <h1>Admin Login</h1>
+    <p>Rehan's Store — owner access only.</p>
+    <div class="fld"><label>EMAIL</label><input type="email" id="le" required autocomplete="username"></div>
+    <div class="fld"><label>PASSWORD</label><input type="password" id="lp" required autocomplete="current-password"></div>
+    <div class="err" id="lerr"></div>
+    <button class="btn acc full" id="lbtn" type="submit">Sign in</button>
+  </form>
+</div>
+
+<!-- App -->
+<div id="app" class="hide">
+  <header>
+    <div class="logo">Rehan's<i>.</i>Store<small>ADMIN</small></div>
+    <div class="hr">
+      <button class="ic-btn" id="themeBtn" aria-label="Toggle dark mode" title="Dark / Light mode">
+        <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        <svg class="moon" viewBox="0 0 24 24"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>
+      </button>
+      <a class="btn out sm" href="index.html" target="_blank">View store</a>
+      <button class="btn out sm" id="logout">Sign out</button>
+    </div>
+  </header>
+  <div class="tabs">
+    <button class="tab on" data-t="products">Products</button>
+    <button class="tab" data-t="orders">Orders <b id="pendBadge" class="hide">0</b></button>
+  </div>
+
+  <main>
+    <!-- Products -->
+    <div id="tab-products">
+      <div class="pgrid">
+        <form class="panel" id="pform">
+          <h2 id="ptitle">Add product</h2>
+          <input type="hidden" id="pid">
+          <div class="drop" id="drop"></div>
+          <input type="file" id="file" accept="image/*" class="hide">
+          <div class="fld"><label>PRODUCT NAME</label><input id="pn" required maxlength="80"></div>
+          <div class="row2">
+            <div class="fld"><label>PRICE (Rs)</label><input id="pp" type="number" min="0" required></div>
+            <div class="fld"><label>OLD PRICE (optional)</label><input id="po" type="number" min="0"></div>
+          </div>
+          <div class="row2">
+            <div class="fld"><label>CATEGORY</label><input id="pc" list="cats" required maxlength="30" placeholder="e.g. Audio"><datalist id="cats"></datalist></div>
+            <div class="fld"><label>BADGE (optional)</label><input id="pb" list="badges" maxlength="14" placeholder="New / Hot / Sale"><datalist id="badges"><option>New</option><option>Hot</option><option>Sale</option><option>Best Seller</option></datalist></div>
+          </div>
+          <div class="fld"><label>DESCRIPTION</label><textarea id="pd" maxlength="200"></textarea></div>
+          <label class="chk"><input type="checkbox" id="pi" checked> In stock (uncheck to mark as sold out)</label>
+          <div style="display:flex;gap:10px">
+            <button class="btn acc full" id="psave" type="submit">Save product</button>
+            <button class="btn out hide" id="pcancel" type="button">Cancel</button>
+          </div>
+        </form>
+        <div>
+          <div class="stats"><div class="stat"><span>Total products</span><b id="sP">0</b></div><div class="stat"><span>Categories</span><b id="sC">0</b></div><div class="stat"><span>Sold out</span><b id="sS">0</b></div></div>
+          <div class="tb"><input id="psearch" type="search" placeholder="Search products…"></div>
+          <div class="plist" id="plist"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orders -->
+    <div id="tab-orders" class="hide">
+      <div class="stats">
+        <div class="stat"><span>Total orders</span><b id="oT">0</b></div>
+        <div class="stat"><span>Pending</span><b id="oP">0</b></div>
+        <div class="stat"><span>Delivered</span><b id="oD">0</b></div>
+        <div class="stat"><span>Delivered revenue</span><b id="oR">Rs 0</b></div>
+      </div>
+      <div class="chips" id="ochips"></div>
+      <div class="olist" id="olist"></div>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+const firebaseConfig = {
+  apiKey: "AIzaSyDpy9pnXzD-UkVhewE9Ud6z5yXwc-EaM9o",
+  authDomain: "rehans-store.firebaseapp.com",
+  projectId: "rehans-store",
+  storageBucket: "rehans-store.firebasestorage.app",
+  messagingSenderId: "1091048404476",
+  appId: "1:1091048404476:web:abdce6f446a25b02962e79"
+};
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestore(app);
+const $ = s => document.querySelector(s);
+const root = document.documentElement;
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = n => "Rs " + Number(n||0).toLocaleString("en-PK");
+function toast(t, bad){ const el = $("#toast"); el.textContent = t; el.classList.toggle("bad", !!bad); el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 2600); }
+
+/* ---------- Theme (shared with the store) ---------- */
+function applyTheme(t){ root.dataset.theme = t; try { localStorage.setItem("rs_theme", t); } catch(e){} }
+$("#themeBtn").onclick = e => {
+  const next = root.dataset.theme === "dark" ? "light" : "dark";
+  if (!document.startViewTransition || matchMedia("(prefers-reduced-motion:reduce)").matches) return applyTheme(next);
+  const r = e.currentTarget.getBoundingClientRect(), x = r.left + r.width/2, y = r.top + r.height/2;
+  const rad = Math.hypot(Math.max(x, innerWidth-x), Math.max(y, innerHeight-y));
+  try {
+    const vt = document.startViewTransition(() => applyTheme(next));
+    vt.ready.then(() => root.animate({clipPath:[`circle(0px at ${x}px ${y}px)`,`circle(${rad}px at ${x}px ${y}px)`]},{duration:600,easing:"cubic-bezier(.4,0,.2,1)",pseudoElement:"::view-transition-new(root)"})).catch(()=>{});
+  } catch(err){ applyTheme(next); }
+};
+
+/* ---------- Auth ---------- */
+$("#lform").onsubmit = async e => {
+  e.preventDefault(); $("#lerr").textContent = ""; $("#lbtn").disabled = true;
+  try { await signInWithEmailAndPassword(auth, $("#le").value.trim(), $("#lp").value); }
+  catch(err){ $("#lerr").textContent = "Incorrect email or password."; }
+  $("#lbtn").disabled = false;
+};
+$("#logout").onclick = () => signOut(auth);
+let unsubs = [];
+onAuthStateChanged(auth, user => {
+  unsubs.forEach(u => u()); unsubs = [];
+  $("#login").classList.toggle("hide", !!user);
+  $("#app").classList.toggle("hide", !user);
+  if (user) startListeners();
+});
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x === t));
+  $("#tab-products").classList.toggle("hide", t.dataset.t !== "products");
+  $("#tab-orders").classList.toggle("hide", t.dataset.t !== "orders");
+});
+
+/* ---------- Image: gallery -> compressed JPEG ---------- */
+let imgData = "", keepImg = "";
+const drop = $("#drop"), file = $("#file");
+const PH = `<div class="ph"><b>📷</b>Choose a photo from your gallery<small>or drag and drop it here</small></div>`;
+drop.innerHTML = PH;
+drop.onclick = () => file.click();
+file.onchange = () => file.files[0] && pick(file.files[0]);
+["dragover","dragenter"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => e.dataTransfer.files[0] && pick(e.dataTransfer.files[0]));
+function compress(f){
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(f);
+    img.onload = () => {
+      let max = 900, q = .82, out;
+      for (;;) {
+        const s = Math.min(1, max / Math.max(img.width, img.height));
+        const c = document.createElement("canvas"); c.width = Math.round(img.width*s); c.height = Math.round(img.height*s);
+        const x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+        out = c.toDataURL("image/jpeg", q);
+        if (out.length < 300000 || max < 350) break;
+        max -= 100; q = Math.max(.6, q - .04);
+      }
+      URL.revokeObjectURL(url); res(out);
+    };
+    img.onerror = () => rej(new Error("bad image")); img.src = url;
+  });
+}
+async function pick(f){
+  if (!f.type.startsWith("image/")) return toast("Please choose an image file", true);
+  try { imgData = await compress(f); showPreview(imgData); } catch(e){ toast("Couldn't load that photo", true); }
+}
+function showPreview(src){ drop.innerHTML = src ? `<img src="${src}" alt="">` : PH; }
+
+/* ---------- Data listeners ---------- */
+let products = [], orders = [], pterm = "", ofilter = "all";
+function startListeners(){
+  unsubs.push(onSnapshot(collection(db,"products"), snap => {
+    products = snap.docs.map(d => ({id:d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
+    renderProducts();
+  }, err => toast("Couldn't load products: " + err.code, true)));
+  unsubs.push(onSnapshot(query(collection(db,"orders"), orderBy("createdAt","desc")), snap => {
+    orders = snap.docs.map(d => ({id:d.id, ...d.data()}));
+    renderOrders();
+  }, err => toast("Couldn't load orders: " + err.code, true)));
+}
+
+/* ---------- Products ---------- */
+$("#psearch").oninput = e => { pterm = e.target.value.trim().toLowerCase(); renderProducts(); };
+function renderProducts(){
+  const cats = [...new Set(products.map(p => p.category).filter(Boolean))];
+  $("#sP").textContent = products.length; $("#sC").textContent = cats.length; $("#sS").textContent = products.filter(p => p.inStock === false).length;
+  $("#cats").innerHTML = cats.map(c => `<option value="${esc(c)}">`).join("");
+  const list = products.filter(p => !pterm || (p.name+" "+p.category).toLowerCase().includes(pterm));
+  $("#plist").innerHTML = list.length ? list.map(p => `
+    <div class="pc"><div class="im">${p.image ? `<img src="${esc(p.image)}" alt="">` : "No photo"}${p.inStock === false ? `<span class="tg">Sold out</span>` : ""}</div>
+      <h3>${esc(p.name)}</h3><small>${esc(p.category)}${p.badge ? " · " + esc(p.badge) : ""}</small>
+      <div class="pr">${fmt(p.price)}${p.oldPrice ? `<s>${fmt(p.oldPrice)}</s>` : ""}</div>
+      <div class="acts"><button class="btn out sm" data-e="${esc(p.id)}">Edit</button><button class="btn red sm" data-d="${esc(p.id)}">Delete</button></div></div>`).join("")
+    : `<div class="empty">${products.length ? "No products match your search." : "No products yet. Use the form to add your first product."}</div>`;
+  document.querySelectorAll("[data-e]").forEach(b => b.onclick = () => editProduct(b.dataset.e));
+  document.querySelectorAll("[data-d]").forEach(b => b.onclick = async () => {
+    const p = products.find(x => x.id === b.dataset.d);
+    if (!confirm(`Delete "${p.name}"? This cannot be undone.`)) return;
+    try { await deleteDoc(doc(db,"products",p.id)); toast("Product deleted"); } catch(e){ toast("Couldn't delete: " + e.code, true); }
+  });
+}
+function resetForm(){
+  $("#pform").reset(); $("#pid").value = ""; $("#pi").checked = true; imgData = ""; keepImg = ""; file.value = "";
+  showPreview(""); $("#ptitle").textContent = "Add product"; $("#pcancel").classList.add("hide"); $("#psave").textContent = "Save product";
+}
+function editProduct(id){
+  const p = products.find(x => x.id === id); if (!p) return;
+  $("#pid").value = id; $("#pn").value = p.name||""; $("#pp").value = p.price??""; $("#po").value = p.oldPrice??"";
+  $("#pc").value = p.category||""; $("#pb").value = p.badge||""; $("#pd").value = p.desc||""; $("#pi").checked = p.inStock !== false;
+  imgData = ""; keepImg = p.image||""; showPreview(keepImg);
+  $("#ptitle").textContent = "Edit product"; $("#psave").textContent = "Update product"; $("#pcancel").classList.remove("hide");
+  scrollTo({top:0, behavior:"smooth"});
+}
+$("#pcancel").onclick = resetForm;
+$("#pform").onsubmit = async e => {
+  e.preventDefault();
+  const btn = $("#psave"); btn.disabled = true;
+  const data = {
+    name: $("#pn").value.trim(), category: $("#pc").value.trim(), price: Number($("#pp").value),
+    oldPrice: $("#po").value ? Number($("#po").value) : null, badge: $("#pb").value.trim(), desc: $("#pd").value.trim(),
+    inStock: $("#pi").checked, image: imgData || keepImg || ""
+  };
+  try {
+    const id = $("#pid").value;
+    if (id) { await updateDoc(doc(db,"products",id), data); toast("Product updated ✓"); }
+    else { await addDoc(collection(db,"products"), {...data, createdAt: serverTimestamp()}); toast("Product added ✓"); }
+    resetForm();
+  } catch(err){ console.error(err); toast("Couldn't save: " + (err.code || err.message), true); }
+  btn.disabled = false;
+};
+
+/* ---------- Orders ---------- */
+const STATUSES = ["pending","confirmed","shipped","delivered","cancelled"];
+function waLink(phone, name, oid){
+  let d = String(phone||"").replace(/\D/g,""); if (d.startsWith("0")) d = "92" + d.slice(1);
+  return `https://wa.me/${d}?text=${encodeURIComponent(`Hello ${name}, we have received your order ${oid} at Rehan's Store. Thank you!`)}`;
+}
+function renderOrders(){
+  const st = o => o.status || "pending";
+  const pend = orders.filter(o => st(o) === "pending").length, del = orders.filter(o => st(o) === "delivered");
+  $("#oT").textContent = orders.length; $("#oP").textContent = pend; $("#oD").textContent = del.length;
+  $("#oR").textContent = fmt(del.reduce((s,o) => s + Number(o.total||0), 0));
+  const pb = $("#pendBadge"); pb.textContent = pend; pb.classList.toggle("hide", !pend);
+  $("#ochips").innerHTML = ["all",...STATUSES].map(s => `<button class="chip ${s===ofilter?"on":""}" data-o="${s}">${s==="all"?"All":s[0].toUpperCase()+s.slice(1)}</button>`).join("");
+  document.querySelectorAll("[data-o]").forEach(b => b.onclick = () => { ofilter = b.dataset.o; renderOrders(); });
+  const list = orders.filter(o => ofilter === "all" || st(o) === ofilter);
+  $("#olist").innerHTML = list.length ? list.map(o => {
+    const s = st(o), when = o.createdAt?.toDate ? o.createdAt.toDate().toLocaleString("en-PK") : "";
+    return `<div class="oc"><div class="oh"><div><b>${esc(o.orderId || o.id.slice(0,6).toUpperCase())}</b><small>${esc(when)}</small></div><span class="tag t-${esc(s)}">${esc(s)}</span></div>
+      <div class="ob"><div><h4>Customer</h4>${esc(o.name)}<br>${esc(o.phone)}<br>${esc(o.city)}<br>${esc(o.address)}${o.email ? `<br>${esc(o.email)}` : ""}${o.note ? `<br><i>Note: ${esc(o.note)}</i>` : ""}</div>
+      <div><h4>Items</h4>${(o.items||[]).map(i => `<div class="it"><span>${esc(i.name)} × ${esc(i.qty)}</span><span>${fmt(i.price*i.qty)}</span></div>`).join("")}${o.delivery ? `<div class="it"><span>Delivery</span><span>${fmt(o.delivery)}</span></div>` : ""}</div></div>
+      <div class="of"><select data-s="${esc(o.id)}" aria-label="Order status">${STATUSES.map(x => `<option value="${x}" ${x===s?"selected":""}>${x[0].toUpperCase()+x.slice(1)}</option>`).join("")}</select>
+        <a class="btn wa sm" href="${waLink(o.phone,o.name,o.orderId||"")}" target="_blank" rel="noopener">WhatsApp customer</a>
+        <button class="btn red sm" data-od="${esc(o.id)}">Delete</button><span class="tot">${fmt(o.total)}</span></div></div>`;
+  }).join("") : `<div class="empty">${orders.length ? "No orders with this status." : "No orders yet."}</div>`;
+  document.querySelectorAll("[data-s]").forEach(sel => sel.onchange = async () => {
+    try { await updateDoc(doc(db,"orders",sel.dataset.s), {status:sel.value}); toast("Order status updated ✓"); } catch(e){ toast("Couldn't update: " + e.code, true); }
+  });
+  document.querySelectorAll("[data-od]").forEach(b => b.onclick = async () => {
+    if (!confirm("Delete this order? This cannot be undone.")) return;
+    try { await deleteDoc(doc(db,"orders",b.dataset.od)); toast("Order deleted"); } catch(e){ toast("Couldn't delete: " + e.code, true); }
+  });
+}
+</script>
+</body>
+</html>
